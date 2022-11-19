@@ -2,7 +2,7 @@ package rest
 
 import (
 	"encoding/json"
-	"example.com/m/v2/internal/models"
+	"github.com/Nizom98/stats/internal/models"
 	"net/http"
 )
 

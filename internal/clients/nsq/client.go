@@ -2,8 +2,8 @@ package nsq
 
 import (
 	"encoding/json"
-	"example.com/m/v2/internal/models"
 	"fmt"
+	"github.com/Nizom98/stats/internal/models"
 	"github.com/nsqio/go-nsq"
 	"log"
 )

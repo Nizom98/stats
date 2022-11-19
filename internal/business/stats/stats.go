@@ -3,8 +3,7 @@ package stats
 import (
 	"fmt"
 
-	"example.com/m/v2/internal/models"
-	"example.com/m/v2/internal/repository"
+	"github.com/Nizom98/stats/internal/models"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -17,7 +16,7 @@ const (
 )
 
 type manager struct {
-	repo repository.StatsRepository
+	repo models.StatsRepository
 }
 
 // Stats получаем данные о статистике
@@ -26,7 +25,7 @@ func (man *manager) Stats() models.Stats {
 }
 
 // NewManager конструктор менеджера кошельков
-func NewManager(repo repository.StatsRepository) *manager {
+func NewManager(repo models.StatsRepository) *manager {
 	return &manager{
 		repo: repo,
 	}
@@ -34,7 +33,7 @@ func NewManager(repo repository.StatsRepository) *manager {
 
 // newEventCreated обрабатываем событие о создании кошелька
 func (man *manager) newEventCreated() error {
-	errTx := man.repo.Transaction(func(repo *repository.StatsRepository) error {
+	errTx := man.repo.Transaction(func(repo models.StatsRepository) error {
 		repo.IncTotal()
 		repo.Activated()
 		return nil
@@ -44,7 +43,7 @@ func (man *manager) newEventCreated() error {
 
 // newEventDeposited обрабатываем событие о деактивации кошелька
 func (man *manager) newEventDeleted() error {
-	errTx := man.repo.Transaction(func(repo *repository.StatsRepository) error {
+	errTx := man.repo.Transaction(func(repo models.StatsRepository) error {
 		repo.Deactivated()
 		return nil
 	})
@@ -53,7 +52,7 @@ func (man *manager) newEventDeleted() error {
 
 // newEventDeposited обрабатываем событие о пополнении
 func (man *manager) newEventDeposited(amount float64) error {
-	errTx := man.repo.Transaction(func(repo *repository.StatsRepository) error {
+	errTx := man.repo.Transaction(func(repo models.StatsRepository) error {
 		repo.Deposited(amount)
 		return nil
 	})
@@ -62,7 +61,7 @@ func (man *manager) newEventDeposited(amount float64) error {
 
 // newEventWithdrawn обрабатываем событие о снятии
 func (man *manager) newEventWithdrawn(amount float64) error {
-	errTx := man.repo.Transaction(func(repo *repository.StatsRepository) error {
+	errTx := man.repo.Transaction(func(repo models.StatsRepository) error {
 		repo.Withdrawn(amount)
 		return nil
 	})
@@ -71,7 +70,7 @@ func (man *manager) newEventWithdrawn(amount float64) error {
 
 // newEventTransfered обрабатываем событие о переводе
 func (man *manager) newEventTransfered(amount float64) error {
-	errTx := man.repo.Transaction(func(repo *repository.StatsRepository) error {
+	errTx := man.repo.Transaction(func(repo models.StatsRepository) error {
 		repo.Transfered(amount)
 		return nil
 	})

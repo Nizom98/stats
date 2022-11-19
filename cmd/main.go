@@ -3,10 +3,10 @@ package main
 import (
 	"net/http"
 
-	"example.com/m/v2/internal/api/rest"
-	stats2 "example.com/m/v2/internal/business/stats"
-	"example.com/m/v2/internal/clients/nsq"
-	"example.com/m/v2/internal/repository"
+	"github.com/Nizom98/stats/internal/api/rest"
+	stats2 "github.com/Nizom98/stats/internal/business/stats"
+	"github.com/Nizom98/stats/internal/clients/nsq"
+	"github.com/Nizom98/stats/internal/repository"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 )
@@ -28,7 +28,7 @@ func main() {
 	defer nsq.Stop()
 
 	repoWallet := repository.NewRepo()
-	manStats := stats2.NewManager(*repoWallet)
+	manStats := stats2.NewManager(repoWallet)
 	handler, err := rest.NewHandler(manStats)
 	if err != nil {
 		panic(err)
@@ -37,7 +37,7 @@ func main() {
 	nsq.StartConsume(manStats.EventHandler)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/stats/wallets", handler.StatsHandler).Methods(http.MethodGet)
+	r.HandleFunc("/stats/wallets", handler.MiddlewareLog(handler.StatsHandler)).Methods(http.MethodGet)
 
 	log.Infof("app started on: %s", appAddr)
 	defer func() {

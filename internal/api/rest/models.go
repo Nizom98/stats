@@ -1,6 +1,6 @@
 package rest
 
-import "example.com/m/v2/internal/models"
+import "github.com/Nizom98/stats/internal/models"
 
 type Handler struct {
 	manStats models.StatsManager

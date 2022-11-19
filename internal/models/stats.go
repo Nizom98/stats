@@ -13,3 +13,14 @@ type StatsManager interface {
 	EventHandler(event *Event)
 	Stats() Stats
 }
+
+type StatsRepository interface {
+	Transaction(fn func(repo StatsRepository) error) error
+	IncTotal()
+	Activated()
+	Deactivated()
+	Deposited(amount float64)
+	Withdrawn(amount float64)
+	Transfered(amount float64)
+	Stats() Stats
+}

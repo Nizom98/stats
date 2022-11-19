@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"example.com/m/v2/internal/models"
+	"github.com/Nizom98/stats/internal/models"
 	"sync"
 )
 
@@ -12,7 +12,7 @@ type StatsRepository struct {
 }
 
 // NewRepo конструктор репозитория
-func NewRepo() *StatsRepository {
+func NewRepo() models.StatsRepository {
 	return &StatsRepository{
 		muStats: new(sync.RWMutex),
 		stats:   &stats{},
@@ -20,7 +20,7 @@ func NewRepo() *StatsRepository {
 }
 
 // Transaction для конкурентной записи в хранилище.
-func (repo *StatsRepository) Transaction(fn func(repo *StatsRepository) error) error {
+func (repo *StatsRepository) Transaction(fn func(repo models.StatsRepository) error) error {
 	repo.muStats.Lock()
 	defer repo.muStats.Unlock()
 
